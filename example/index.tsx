@@ -2,15 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import Button from "./components/Button";
-import Document from "./Document";
-import { num } from "./docTypes/num";
-import { choices } from "./docTypes/choices";
-import { str } from "./docTypes/str";
-import { callback } from "./docTypes/callback";
-import { bool } from "./docTypes/bool";
+import Document from "../src/Document";
+import { num } from "../src/docTypes/num";
+import { choices } from "../src/docTypes/choices";
+import { str } from "../src/docTypes/str";
+import { callback } from "../src/docTypes/callback";
+import { bool } from "../src/docTypes/bool";
+import { colors } from "../src/docTypes/colors";
+
 import Checkbox from "./components/Checkbox";
 import { H1, H2, H3, H4, H5, H6 } from "./components/Text";
-import { colors } from "./docTypes/colors";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,7 +19,6 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Document
-      
       _a={Button}
       mode={choices({ default: "primary" }, "primary", "secondary", "tertiary")`
             Primary display mode
@@ -33,9 +33,8 @@ root.render(
     />
 
     <Document
-      
       _a={Checkbox}
-      _defaultView='grid'
+      _defaultView="grid"
       checked={bool({ trinary: true })}
       disabled={bool()}
       onClick={callback()}
@@ -53,8 +52,8 @@ root.render(
           { _overrideComponent: H6 },
         ],
       ]}
-      _defaultView='examples'
-      color={colors({default: '#000', example: '#000'})}
+      _defaultView="examples"
+      color={colors({ default: "#000", example: "#000" })}
       children={str({ example: "The quick brown fox etc" })}
     />
   </React.StrictMode>

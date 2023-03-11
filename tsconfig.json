@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "example/index.tsx", "example/components", "example/setupTests.ts", "example/react-app-env.d.ts"  ]
 }

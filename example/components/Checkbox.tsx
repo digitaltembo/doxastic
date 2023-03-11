@@ -1,5 +1,5 @@
 import React from "react";
-import { PropMetasOf } from "../types";
+import { PropMetasOf } from "../../src/types";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement>;
 
