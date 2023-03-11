@@ -1,46 +1,64 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center"><img align="center" alt="Doxastic" src="https://user-images.githubusercontent.com/4743325/224505564-9a428cf2-7dbe-4fbb-84b6-9cb8799a92d0.png" /></p>
+<h4 align="center">🚧🚧🚧Under Construction 🚧🚧🚧</h4>
+<h5 align="center">Document your React component library, with React</h5>
 
-## Available Scripts
+**Doxastic** is a component documentation system that aims to ease component implementation and iteration, taking you from install to fully customizable, interactive, and self-documenting component library/playground in a few easy steps.
 
-In the project directory, you can run:
+[Storybook](https://github.com/storybookjs/storybook) is the classic and almost ubiquitous React component library documentation system, and [React Styleguidist](https://github.com/styleguidist/react-styleguidist) is another excellent project in this field. Both have many features that allow your component docs to thrive! But both require new types of files that are built with a whole new build process - Doxastic lets you document and render documentation with an ergonomic and well-typed interface of React components. At a high level, Doxastic should be able to provide all the features you want without additional overhead!
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I guess install the thing
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Document a Component
+Lets walk through a straightforward Checkbox component documentation:
+```jsx
+import {Document, bool, callback} from "doxastic";
+import Checkbox from "my-checkbox-component";
 
-### `npm test`
+<Document
+  _a={Checkbox}
+  _defaultView='grid'
+  checked={bool({ trinary: true })`
+    This is documentation about the checked prop
+  `}
+  disabled={bool()}
+  onClick={callback()}
+/>
+```
+<img width="444" alt="Screenshot 2023-03-11 at 1 58 09 PM" src="https://user-images.githubusercontent.com/4743325/224506696-e929fa02-94df-4d71-b2b8-88efd1aa6145.png">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Easy enough to see, this will render documentation on our Checkbox component. The `_defaultView` here says that we will by default see a grid of permutations of the component, automatically chosen based on the potential and example values of the props of the component.
 
-### `npm run build`
+The most important part of documenting a component is documenting the props - and for this, the `Document` component from doxastic takes in property meta values, easily created through a variety of helpers. Here we demonstrate 2 boolean properties, with the `checked` property behaving as a trinary boolean (where unknown is significantly distinct from false), and `disabled` being self-explanatory. All of the docType helpers can additionally act as a tagged template string, where the final string is arbitrary documentation of the prop. The `onClick` prop takes a callback, with the callback helper instantiating a quick method that logs when the callback is triggered.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Documenting a set of components
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Sometimes, you may want to document a set of related components together:
+```jsx
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+import {Document, colors, str} from "doxastic";
+import {H1, H2, H3, H4, H5, H6} from "my-text-components";
 
-### `npm run eject`
+<Document
+  _a={H1}
+  _examples={[
+    [
+      { _overrideComponent: H1 },
+      { _overrideComponent: H2 },
+      { _overrideComponent: H3 },
+      { _overrideComponent: H4 },
+      { _overrideComponent: H5 },
+      { _overrideComponent: H6 },
+    ],
+  ]}
+  _defaultView='examples'
+  color={colors({default: '#000', example: '#000'})}
+  children={str({ example: "The quick brown fox etc" })}
+/>
+```
+Here we group together our various text components, rendering a set of examples with different component. We also introduce the `colors` and `str` docType helpers, which render basic input elements. With this, we can see all of the components together, and quickly try out new colors and contents on all of them:
+<img width="483" alt="Screenshot 2023-03-11 at 1 56 53 PM" src="https://user-images.githubusercontent.com/4743325/224506655-d3128374-f401-4014-aa50-7a25ec0e9135.png">
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+And that is about what I have in me right now!
