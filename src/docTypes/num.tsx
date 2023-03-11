@@ -31,7 +31,7 @@ function NumberControl({
         }
       }
     },
-    [onChange]
+    [onChange, meta.required]
   );
   return (
     <input

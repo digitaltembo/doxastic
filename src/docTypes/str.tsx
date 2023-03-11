@@ -24,7 +24,7 @@ function StringControl({
         }
       }
     },
-    [onChange]
+    [onChange, meta.required]
   );
   return (
     <input

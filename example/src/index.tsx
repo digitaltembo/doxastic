@@ -1,14 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
+import { bool, callback, choices, colors, Document, num, str } from "doxastic";
 import Button from "./components/Button";
-import Document from "../src/Document";
-import { num } from "../src/docTypes/num";
-import { choices } from "../src/docTypes/choices";
-import { str } from "../src/docTypes/str";
-import { callback } from "../src/docTypes/callback";
-import { bool } from "../src/docTypes/bool";
-import { colors } from "../src/docTypes/colors";
 
 import Checkbox from "./components/Checkbox";
 import { H1, H2, H3, H4, H5, H6 } from "./components/Text";

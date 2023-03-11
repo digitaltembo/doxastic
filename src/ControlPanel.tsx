@@ -1,14 +1,14 @@
 import React from "react";
-import { PropContexts, PropContextType } from "./PropContext";
-import { EasyComponent, PropMetasOf, PropsOf } from "./types";
+import { ComponentContexts, ComponentContextType } from "./ComponentContext";
+import { EasyComponent } from "./types";
 
 type ControlPanelProps = {
   componentName: string;
 };
 function ControlPanel<C extends EasyComponent>({ componentName }: ControlPanelProps) {
   const { props, meta, setPropVal } = React.useContext(
-    PropContexts[componentName]
-  ) as PropContextType<C>;
+    ComponentContexts[componentName]
+  ) as ComponentContextType<C>;
   return (
     <table>
       <thead>

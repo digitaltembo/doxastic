@@ -1,8 +1,7 @@
 import React from "react";
-import { PropContexts, PropContextType } from "./PropContext";
+import { ComponentContexts, ComponentContextType } from "./ComponentContext";
 import RenderInWindow from "./RenderInWindow";
-import { EasyComponent, PropGridOf, PropsOf } from "./types";
-
+import { EasyComponent, PropsOf } from "./types";
 
 type Props = {
   componentName: string;
@@ -13,8 +12,8 @@ function Canvas<C extends EasyComponent>({
 }: Props) {
 
   const { Component, samples, view, setView } = React.useContext(
-    PropContexts[componentName]
-  ) as PropContextType<C>;
+    ComponentContexts[componentName]
+  ) as ComponentContextType<C>;
   
   const [newWindow, setNewWindow] = React.useState(false);
   const grid = React.useMemo(

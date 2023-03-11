@@ -1,6 +1,6 @@
 import React from "react";
 import { BooleanPropMeta } from "./docTypes/bool";
-import { nameOf, PropContexts, PropContextType } from "./PropContext";
+import { nameOf, ComponentContexts, ComponentContextType } from "./ComponentContext";
 import { EasyComponent, PropGrid, PropsOf } from "./types";
 
 type Props = {
@@ -40,8 +40,8 @@ function ColCode<C extends EasyComponent>({
 // }
 function Code<C extends EasyComponent>({ componentName, importPath }: Props) {
   const { meta, samples } = React.useContext(
-    PropContexts[componentName]
-  ) as PropContextType<C>;
+    ComponentContexts[componentName]
+  ) as ComponentContextType<C>;
 
   const propList: PropGrid<PropPair<C>> = React.useMemo(
     () =>
@@ -51,7 +51,7 @@ function Code<C extends EasyComponent>({ componentName, importPath }: Props) {
           Object.entries(sampleProps)
             .map(([key, value]) => {
               if (
-                key == "children" ||
+                key === "children" ||
                 value === undefined ||
                 value === meta[key]?.default ||
                 (!(meta[key] as Partial<BooleanPropMeta>)?.trinary &&
@@ -71,7 +71,7 @@ function Code<C extends EasyComponent>({ componentName, importPath }: Props) {
             .join(""),
         ])
       ),
-    [samples]
+    [samples, meta]
   );
   return (
     <pre style={{ textAlign: "left" }}>

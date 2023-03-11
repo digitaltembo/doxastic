@@ -1,14 +1,12 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Canvas from "./Canvas";
 import Code from "./Code";
 import ControlPanel from "./ControlPanel";
-import { ComponentView, nameOf, PropProvider } from "./PropContext";
+import { ComponentView, nameOf, ComponentProvider } from "./ComponentContext";
 
 import {
   EasyComponent,
   PropMetasOf,
-  PropMeta,
   PropsOf,
   PropGridOf,
 } from "./types";
@@ -40,14 +38,12 @@ function getPropMeta<C extends EasyComponent>(props: DocumentProps<C>) {
 }
 
 function Document<C extends EasyComponent>(props: DocumentProps<C>) {
-  const [componentView, setComponentView] = React.useState(
-    props?._defaultView ?? "single"
-  );
-
+  
   const componentName = React.useMemo(
     () => nameOf(props._a),
-    [props._a.name, props._a.displayName]
+    [props._a]
   );
+  
   const meta = React.useMemo(() => getPropMeta(props), [props]);
 
   if (props._hide) {
@@ -55,7 +51,7 @@ function Document<C extends EasyComponent>(props: DocumentProps<C>) {
   }
 
   return (
-    <PropProvider
+    <ComponentProvider
       componentName={componentName}
       meta={meta}
       examples={props._examples}
@@ -67,7 +63,7 @@ function Document<C extends EasyComponent>(props: DocumentProps<C>) {
       />
       <Code componentName={componentName} importPath={props._import} />
       <ControlPanel componentName={componentName} />
-    </PropProvider>
+    </ComponentProvider>
   );
 }
 

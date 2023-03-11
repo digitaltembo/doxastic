@@ -24,7 +24,7 @@ function ColorControl({
         }
       }
     },
-    [onChange]
+    [onChange, meta.required]
   );
   return (
     <input

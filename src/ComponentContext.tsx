@@ -1,7 +1,6 @@
 import React from "react";
 import {
   EasyComponent,
-  PropGrid,
   PropGridOf,
   PropMetasOf,
   PropsOf,
@@ -9,7 +8,7 @@ import {
 
 export type ComponentView = "single" | "grid" | "examples";
 
-export type PropContextType<C extends EasyComponent> = {
+export type ComponentContextType<C extends EasyComponent> = {
   props: PropsOf<C>;
   meta: PropMetasOf<C>;
   samples: PropGridOf<C>;
@@ -19,9 +18,9 @@ export type PropContextType<C extends EasyComponent> = {
   setView: (newView: ComponentView) => void;
 };
 
-export const PropContexts: Record<
+export const ComponentContexts: Record<
   string,
-  React.Context<PropContextType<any>>
+  React.Context<ComponentContextType<any>>
 > = {};
 
 export function nameOf<C extends EasyComponent>(Component: C) {
@@ -94,7 +93,7 @@ function getSamplesFromDimensions<C extends EasyComponent>(
   });
 }
 
-export function PropProvider<C extends EasyComponent>({
+export function ComponentProvider<C extends EasyComponent>({
   componentName,
   meta,
   examples,
@@ -136,11 +135,11 @@ export function PropProvider<C extends EasyComponent>({
         }
         return fallback;
     }
-  }, [props, meta, view]);
+  }, [props, meta, view, examples]);
 
   const Context = React.useMemo(() => {
-    if (PropContexts[componentName] === undefined) {
-      PropContexts[componentName] = React.createContext<PropContextType<C>>({
+    if (ComponentContexts[componentName] === undefined) {
+      ComponentContexts[componentName] = React.createContext<ComponentContextType<C>>({
         props: startingProps(meta),
         setPropVal: () => () => {},
         meta,
@@ -150,8 +149,8 @@ export function PropProvider<C extends EasyComponent>({
         setView: () => {},
       });
     }
-    return PropContexts[componentName];
-  }, [meta, componentName]);
+    return ComponentContexts[componentName];
+  }, [meta, componentName, Component]);
 
   return (
     <Context.Provider
