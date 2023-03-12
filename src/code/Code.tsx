@@ -1,20 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-import { ComponentContexts, ComponentContextType } from "../utils/ComponentContext";
 import { LibraryContext } from "../utils/LibraryContext";
-import { EasyComponent, PropsOf } from "../types";
+import { EasyComponent, PropGridOf, PropMetasOf, PropsOf } from "../types";
 import { DarkBlue, Yellow, Magenta, Gray } from "./CodeColors";
 import CodeComponentColumm from "./CodeComponentColumn";
 import ComponentLine from "./ComponentLine";
 import ImportLine from "./ImportLine";
-
-const CodeHeader = styled.h3`
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: lighter;
-  margin: 0;
-`;
+import { ClickableHeader } from "../utils/Text";
 
 const Pre = styled.pre`
   background: #202020;
@@ -25,26 +18,24 @@ const Pre = styled.pre`
   margin: 0 -1rem -1rem;
 `;
 
-type Props = {
+type Props<C extends EasyComponent> = {
   componentName: string;
   importPath?: string;
+  meta: PropMetasOf<C>;
+  samples: PropGridOf<C>;
 };
 
-function Code<C extends EasyComponent>({ componentName, importPath }: Props) {
+function Code<C extends EasyComponent>({ componentName, importPath, meta, samples }: Props<C>) {
   const { defaultShowSource } = React.useContext(LibraryContext);
   const [showSource, setShowSource] = React.useState(
     defaultShowSource ?? false
   );
 
-  const { meta, samples } = React.useContext(
-    ComponentContexts[componentName]
-  ) as ComponentContextType<C>;
-
   return (
     <>
-      <CodeHeader onClick={() => setShowSource((cur) => !cur)}>
+      <ClickableHeader onClick={() => setShowSource((cur) => !cur)}>
         Source
-      </CodeHeader>
+      </ClickableHeader>
       {showSource && (
         <Pre style={{ textAlign: "left" }}>
           <ImportLine thing="React" from="react" />

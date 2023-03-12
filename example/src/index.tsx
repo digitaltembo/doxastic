@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Document, Library, prop } from "doxastic";
+import { Document, Library, prop, views } from "doxastic";
 import Button from "./components/Button";
 
 import Checkbox from "./components/Checkbox";
@@ -17,6 +17,12 @@ root.render(
         _docs={`
             The humble button serves to entice and engage all sophisticated users
         `}
+        _views={[
+            views.simple,
+            views.example([[{mode:"secondary"}]])`
+                The Secondary button is used as a lame fallback
+            `
+        ]}
         _import="src/components/Button.tsx"
         mode={prop.choices(
           { default: "primary" },
@@ -43,8 +49,8 @@ root.render(
 
       <Document
         _a={Checkbox}
+        _views={[views.autoGrid]}
         _import="src/components/Checkbox.tsx"
-        _defaultView="grid"
         checked={prop.bool({ trinary: true })}
         disabled={prop.bool()}
         onClick={prop.callback()}
@@ -54,17 +60,18 @@ root.render(
         _a={H1}
         _import="src/components/Text.tsx"
         _name="Text"
-        _examples={[
-          [
-            { _overrideComponent: H1 },
-            { _overrideComponent: H2 },
-            { _overrideComponent: H3 },
-            { _overrideComponent: H4 },
-            { _overrideComponent: H5 },
-            { _overrideComponent: H6 },
-          ],
+        _views={[
+          views.example([
+            [
+              { _overrideComponent: H1 },
+              { _overrideComponent: H2 },
+              { _overrideComponent: H3 },
+              { _overrideComponent: H4 },
+              { _overrideComponent: H5 },
+              { _overrideComponent: H6 },
+            ],
+          ]),
         ]}
-        _defaultView="examples"
         color={prop.colors({ default: "#000", example: "#000" })}
         children={prop.str({ example: "The quick brown fox etc" })}
       />

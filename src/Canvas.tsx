@@ -2,9 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Code from "./code/Code";
 
-import { ComponentContexts, ComponentContextType } from "./utils/ComponentContext";
 import RenderInWindow from "./utils/RenderInWindow";
-import { EasyComponent, PropsOf } from "./types";
+import { EasyComponent, PropGridOf, PropMetasOf, PropsOf } from "./types";
 
 const CanvasContainer = styled.div`
   border-radius: 0.5rem;
@@ -26,8 +25,7 @@ const CanvasBody = styled.div`
   flex-direction: column;
   align-items: stretch;
 `;
-const CanvasFooter = styled.div`
-`;
+const CanvasFooter = styled.div``;
 
 const Grid = styled.div`
   flex-grow: 1;
@@ -41,16 +39,21 @@ const Col = styled.div`
   flex-direction: column;
 `;
 
-type Props = {
+type Props<C extends EasyComponent> = {
+  Component: C;
+  samples: PropGridOf<C>;
+  meta: PropMetasOf<C>;
   componentName: string;
   importPath?: string;
 };
 
-function Canvas<C extends EasyComponent>({ importPath, componentName }: Props) {
-  const { Component, samples, view, setView } = React.useContext(
-    ComponentContexts[componentName]
-  ) as ComponentContextType<C>;
-
+function Canvas<C extends EasyComponent>({
+  Component,
+  samples,
+  importPath,
+  componentName,
+  meta,
+}: Props<C>) {
   const [newWindow, setNewWindow] = React.useState(false);
   const grid = React.useMemo(
     () => (
@@ -70,7 +73,12 @@ function Canvas<C extends EasyComponent>({ importPath, componentName }: Props) {
         </Grid>
         <CanvasFooter>
           {" "}
-          <Code componentName={componentName} importPath={importPath} />
+          <Code
+            componentName={componentName}
+            importPath={importPath}
+            meta={meta}
+            samples={samples}
+          />
         </CanvasFooter>
       </>
     ),
@@ -80,12 +88,6 @@ function Canvas<C extends EasyComponent>({ importPath, componentName }: Props) {
   return (
     <CanvasContainer>
       <CanvasHeader>
-        <input
-          type="checkbox"
-          onChange={() => setView(view === "grid" ? "single" : "grid")}
-          checked={view === "grid"}
-        />
-        View Grid
         <input
           type="checkbox"
           onChange={() => setNewWindow(!newWindow)}

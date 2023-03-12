@@ -1,7 +1,7 @@
 {
   "name": "doxastic",
   "type": "module",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Document your React component library, in React",
   "scripts": {
     "rollup": "rollup -c",

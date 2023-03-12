@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { DoxasticTheme, ThemeProvider } from "./ThemeProvider";
 import { LibraryContext, LibraryProvider } from "./utils/LibraryContext";
+import { ClickableHeader } from "./utils/Text";
 import useLocationHashManager from "./utils/useLocationHashManager";
 
 const Window = styled.div`
@@ -9,17 +11,16 @@ const Window = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
-  font-family: sans-serif;
+  ${({theme}) => theme.doxastic.fonts.default}
 `;
 
 const LeftBar = styled.div`
   overflow-y: auto;
-  resize: horizontal;
   min-width: 15%;
   display: flex;
   flex-direction: column;
   padding: 1em;
-  border-right: 1px solid #000;
+  border-right: 1px solid ${({theme}) => theme.doxastic.pallette.fg};
 `;
 const RightBar = styled.div`
   flex-grow: 1;
@@ -27,10 +28,16 @@ const RightBar = styled.div`
   padding: 1em;
 `;
 
+const SingleView = styled.div`
+  ${({theme}) => theme.doxastic.fonts.default}
+  padding: 2rem;
+`;
+
 type LibraryProps = React.PropsWithChildren<{
   heading?: JSX.Element;
   version?: JSX.Element;
   defaultShowSource?: boolean;
+  theme?: DoxasticTheme;
 }>;
 
 export function LibraryLayout({ heading, version, children }: LibraryProps) {
@@ -69,6 +76,7 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
       el?.scrollIntoView();
     }
   }, [components, hash]);
+
   React.useEffect(() => {
     if (rightRef) {
       let currentlyVisible: Element[] = [];
@@ -106,7 +114,7 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
   }, [rightRef, components, changeHash]);
 
   if (activeComponent !== undefined) {
-    return <>{children}</>;
+    return <SingleView>{children}</SingleView>;
   }
   return (
     <Window>
@@ -123,7 +131,7 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
         <ul>
           {filteredComponents.flatMap(({ componentName, ref }) => (
             <li key={componentName}>
-              <button onClick={handleClick(ref)}>{componentName}</button>
+              <ClickableHeader onClick={handleClick(ref)}>{componentName}</ClickableHeader>
             </li>
           ))}
         </ul>
@@ -135,9 +143,11 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
 
 function Library(props: LibraryProps) {
   return (
-    <LibraryProvider defaultShowSource={props.defaultShowSource}>
-      <LibraryLayout {...props} />
-    </LibraryProvider>
+    <ThemeProvider theme={props.theme}>
+      <LibraryProvider defaultShowSource={props.defaultShowSource}>
+        <LibraryLayout {...props} />
+      </LibraryProvider>
+    </ThemeProvider>
   );
 }
 export default Library;

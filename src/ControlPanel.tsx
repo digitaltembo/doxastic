@@ -2,31 +2,34 @@ import React from "react";
 import styled from "styled-components";
 
 import { DarkBlue, Green } from "./code/CodeColors";
-import { ComponentContexts, ComponentContextType } from "./utils/ComponentContext";
-import { EasyComponent } from "./types";
+import { EasyComponent, PropMetasOf, PropsOf } from "./types";
+import { ClickableHeader } from "./utils/Text";
 
-const PanelHeader = styled.h3`
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: lighter;
+const Table = styled.table`
+  width: 100%;
 `;
 
-type ControlPanelProps = {
-  componentName: string;
+type ControlPanelProps<C extends EasyComponent> = {
+  baseProps: PropsOf<C>;
+  meta: PropMetasOf<C>;
+  setPropVal: (key: keyof PropsOf<C>) => (value: any) => void;
+  defaultOpen?: boolean;
 };
 
 function ControlPanel<C extends EasyComponent>({
-  componentName,
-}: ControlPanelProps) {
-  const { props, meta, setPropVal } = React.useContext(
-    ComponentContexts[componentName]
-  ) as ComponentContextType<C>;
-  const [showProps, setShowProps] = React.useState(true);
+    baseProps,
+  meta,
+  setPropVal,
+  defaultOpen,
+}: ControlPanelProps<C>) {
+  const [showProps, setShowProps] = React.useState(defaultOpen ?? false);
   return (
     <>
-      <PanelHeader onClick={() => setShowProps((v) => !v)}>Props</PanelHeader>
+      <ClickableHeader onClick={() => setShowProps((v) => !v)}>
+        Props
+      </ClickableHeader>
       {showProps && (
-        <table>
+        <Table>
           <thead>
             <tr>
               <th>Name</th>
@@ -58,7 +61,7 @@ function ControlPanel<C extends EasyComponent>({
                     <td>
                       <def.Controller
                         onChange={setPropVal(name)}
-                        value={props[name]}
+                        value={baseProps[name]}
                         meta={def}
                       />
                     </td>
@@ -66,7 +69,7 @@ function ControlPanel<C extends EasyComponent>({
                 )
             )}
           </tbody>
-        </table>
+        </Table>
       )}
     </>
   );

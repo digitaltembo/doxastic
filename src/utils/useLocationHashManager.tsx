@@ -22,7 +22,7 @@ function useLocationHashManager() {
   }, []);
   const changeHash = React.useCallback(
     (partialNew: HashContents) => {
-      const newContents = {...hashContents, ...partialNew};
+      const newContents = partialNew;
       const searchParams = new URLSearchParams(newContents);
       // remove undefined entries
       Object.entries(newContents).forEach(([key, value]) => {

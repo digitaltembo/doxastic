@@ -1,19 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+import { DoxasticTheme } from "../ThemeProvider";
 
-const ColorSpan = styled.span<{ color: string }>`
-  color: ${({ color }) => color};
+const ColorSpan = styled.span<{ color: keyof DoxasticTheme["pallette"]}>`
+  color: ${({ color, theme }) => theme.doxastic.pallette[color]};
 `;
 
 const makeColor =
-  (r: number, g: number, b: number) =>
+  (color: keyof DoxasticTheme["pallette"]) =>
   ({ children }: { children: string }) =>
-    <ColorSpan color={`rgb(${r},${g},${b})`}>{children}</ColorSpan>;
+    <ColorSpan color={color}>{children}</ColorSpan>;
 
-export const Magenta = makeColor(179, 130, 180);
-export const Blue = makeColor(168, 216, 248);
-export const DarkBlue = makeColor(100, 150, 200);
-export const Orange = makeColor(193, 146, 122);
-export const Yellow = makeColor(220, 220, 175);
-export const Gray = makeColor(117, 117, 117);
-export const Green = makeColor(113, 200, 180);
+export const Magenta = makeColor("magenta");
+export const Blue = makeColor("blue");
+export const DarkBlue = makeColor("darkBlue");
+export const Orange = makeColor('orange');
+export const Yellow = makeColor('yellow');
+export const Gray = makeColor('gray');
+export const Green = makeColor('green');
