@@ -1,14 +1,35 @@
 import React from "react";
+import styled from "styled-components";
+
 import Canvas from "./Canvas";
-import Code from "./Code";
+import Code from "./code/Code";
 import ControlPanel from "./ControlPanel";
 import { ComponentView, nameOf, ComponentProvider } from "./ComponentContext";
 
 import { EasyComponent, PropMetasOf, PropsOf, PropGridOf } from "./types";
 import { LibraryContext } from "./LibraryContext";
 
+const Name = styled.h1`
+  font-weight: normal;
+`;
+
+const ImportPath = styled.h3`
+  color: #888;
+  font-weight: lighter;
+  cursor: pointer;
+
+  &:hover {
+    color: #666;
+  }
+
+  &:active {
+    color: #000;
+  }
+`;
+
 type BaseDocumentProps<C extends EasyComponent> = {
   _a: C;
+  _docs?: JSX.Element | string;
   _examples?: PropGridOf<C>;
   _import?: string;
   _groupBy?: Array<keyof PropsOf<C>>;
@@ -25,6 +46,7 @@ const RESERVED_PROPS = new Set([
   "_import",
   "_examples",
   "_defaultView",
+  "_docs",
   "_hide",
   "_name",
 ]);
@@ -49,7 +71,7 @@ function Document<C extends EasyComponent>(props: DocumentProps<C>) {
     () => props._name ?? nameOf(props._a),
     [props._name, props._a]
   );
-  const { activeComponent, registerComponent } =
+  const { activeComponent, setActiveComponent, registerComponent } =
     React.useContext(LibraryContext);
 
   const meta = React.useMemo(() => getPropMeta(props), [props]);
@@ -75,10 +97,21 @@ function Document<C extends EasyComponent>(props: DocumentProps<C>) {
       Component={props._a}
       defaultView={props._defaultView}
     >
-      <h1 ref={register}>{componentName}</h1>
+      <Name ref={register}>{componentName}</Name>
+      {activeComponent === componentName ? (
+        <button onClick={() => setActiveComponent()}>Leave</button>
+      ) : (
+        <button onClick={() => setActiveComponent(componentName)}>Full</button>
+      )}
+      {props._import && (
+        <ImportPath title="Copy to Clipboard">{props._import}</ImportPath>
+      )}
+      {props._docs}
+
+      <ControlPanel componentName={componentName} />
       <Canvas componentName={componentName} />
       <Code componentName={componentName} importPath={props._import} />
-      <ControlPanel componentName={componentName} />
+
     </ComponentProvider>
   );
 }

@@ -8,6 +8,7 @@ const Window = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
+  font-family: sans-serif;
 `;
 
 const LeftBar = styled.div`
@@ -16,25 +17,31 @@ const LeftBar = styled.div`
   min-width: 15%;
   display: flex;
   flex-direction: column;
+  padding: 1em;
+  border-right: 1px solid #000;
 `;
 const RightBar = styled.div`
   flex-grow: 1;
   overflow-y: auto;
+  padding: 1em;
 `;
 
 type LibraryProps = React.PropsWithChildren<{
   heading?: JSX.Element;
   version?: JSX.Element;
+  defaultShowSource?: boolean;
 }>;
 
 export function LibraryLayout({ heading, version, children }: LibraryProps) {
-  const { components } = React.useContext(LibraryContext);
+  const { components, activeComponent } = React.useContext(LibraryContext);
 
   const [search, setSearch] = React.useState<string>("");
 
   const filteredComponents = React.useMemo(
     () =>
-      components.filter(({ componentName }) => componentName.toLowerCase().includes(search.toLowerCase())),
+      components.filter(({ componentName }) =>
+        componentName.toLowerCase().includes(search.toLowerCase())
+      ),
     [components, search]
   );
 
@@ -51,20 +58,25 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
     },
     []
   );
-
+  if (activeComponent !== undefined) {
+    return <>{children}</>;
+  }
   return (
     <Window>
       <LeftBar>
         {heading ?? <h1>Doxastic</h1>}
         {version}
         <hr />
-        <input type="text" onChange={handleSearch} value={search} placeholder="Component Search" />
+        <input
+          type="text"
+          onChange={handleSearch}
+          value={search}
+          placeholder="Component Search"
+        />
         <ul>
           {filteredComponents.flatMap(({ componentName, ref }) => (
             <li key={componentName}>
-              <button onClick={handleClick(ref)}>
-                {componentName}
-              </button>
+              <button onClick={handleClick(ref)}>{componentName}</button>
             </li>
           ))}
         </ul>
@@ -76,7 +88,7 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
 
 function Library(props: LibraryProps) {
   return (
-    <LibraryProvider>
+    <LibraryProvider defaultShowSource={props.defaultShowSource}>
       <LibraryLayout {...props} />
     </LibraryProvider>
   );
