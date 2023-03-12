@@ -1,5 +1,4 @@
 import React from "react";
-import { nameOf } from "../ComponentView";
 
 import { BooleanPropMeta } from "../prop/bool";
 import { EasyComponent, PropMetasFor, PropsOf } from "../types";
@@ -15,38 +14,39 @@ function CodeComponentColumm<C extends EasyComponent>({
   col,
   meta,
 }: Props<C>) {
-  const componentProps: Array<ComponentLineProps> = col.map((props: PropsOf<C>) => {
-    const separatedProps: [string, string | undefined][] = Object.entries(
-      props
-    ).flatMap<[string, string | undefined]>(([key, value]) => {
-      if (
-        key === "children" ||
-        value === undefined ||
-        value === meta[key]?.default ||
-        (!(meta[key] as Partial<BooleanPropMeta>)?.trinary &&
-          value === false) ||
-        typeof value === "function"
-      ) {
-        return [];
-      }
-      if (value === true) {
-        return [[key, undefined]];
-      }
-      if (typeof value === "string") {
-        return [[key, `"${value}"`]];
-      }
-      return [[key, `{${value}}`]];
-    });
+  const componentProps: Array<ComponentLineProps> = col.map(
+    (props: PropsOf<C>) => {
+      const separatedProps: [string, string | undefined][] = Object.entries(
+        props
+      ).flatMap<[string, string | undefined]>(([key, value]) => {
+        if (
+          key === "children" ||
+          value === undefined ||
+          value === meta[key]?.default ||
+          (!(meta[key] as Partial<BooleanPropMeta>)?.trinary &&
+            value === false) ||
+          key === "_override" ||
+          typeof value === "function"
+        ) {
+          return [];
+        }
+        if (value === true) {
+          return [[key, undefined]];
+        }
+        if (typeof value === "string") {
+          return [[key, `"${value}"`]];
+        }
+        return [[key, `{${value}}`]];
+      });
 
-    return {
-      indents: 4,
-      name: props._overrideComponent
-        ? nameOf(props._overrideComponent)
-        : componentName,
-      children: props.children,
-      props: Object.fromEntries(separatedProps),
-    };
-  });
+      return {
+        indents: 4,
+        name: props._override?.name ?? componentName,
+        children: props.children,
+        props: Object.fromEntries(separatedProps),
+      };
+    }
+  );
 
   return componentProps.length > 1 ? (
     <>

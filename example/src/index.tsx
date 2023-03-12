@@ -14,14 +14,15 @@ root.render(
     <Library defaultShowSource>
       <Document
         _a={Button}
+        _name="Button"
         _docs={`
             The humble button serves to entice and engage all sophisticated users
         `}
         _views={[
-            views.simple,
-            views.example([[{mode:"secondary"}]])`
+          views.simple,
+          views.example([[{ mode: "secondary" }]])`
                 The Secondary button is used as a lame fallback
-            `
+            `,
         ]}
         _import="src/components/Button.tsx"
         mode={prop.choices(
@@ -49,6 +50,7 @@ root.render(
 
       <Document
         _a={Checkbox}
+        _name="Checkbox"
         _views={[views.autoGrid]}
         _import="src/components/Checkbox.tsx"
         checked={prop.bool({ trinary: true })}
@@ -63,12 +65,12 @@ root.render(
         _views={[
           views.example([
             [
-              { _overrideComponent: H1 },
-              { _overrideComponent: H2 },
-              { _overrideComponent: H3 },
-              { _overrideComponent: H4 },
-              { _overrideComponent: H5 },
-              { _overrideComponent: H6 },
+              { _override: { component: H1, name: "H1" } },
+              { _override: { component: H2, name: "H2" } },
+              { _override: { component: H3, name: "H3" } },
+              { _override: { component: H4, name: "H4" } },
+              { _override: { component: H5, name: "H5" } },
+              { _override: { component: H6, name: "H6" } },
             ],
           ]),
         ]}

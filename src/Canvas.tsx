@@ -57,32 +57,21 @@ function Canvas<C extends EasyComponent>({
   const [newWindow, setNewWindow] = React.useState(false);
   const grid = React.useMemo(
     () => (
-      <>
-        <Grid>
-          {samples.map((col: Array<PropsOf<C>>, i) => (
-            <Col key={`col${i}`}>
-              {col.map((props: PropsOf<C>, j) =>
-                props._overrideComponent ? (
-                  <props._overrideComponent key={`comp${i}-${j}`} {...props} />
-                ) : (
-                  <Component key={`comp${i}-${j}`} {...props} />
-                )
-              )}
-            </Col>
-          ))}
-        </Grid>
-        <CanvasFooter>
-          {" "}
-          <Code
-            componentName={componentName}
-            importPath={importPath}
-            meta={meta}
-            samples={samples}
-          />
-        </CanvasFooter>
-      </>
+      <Grid>
+        {samples.map((col: Array<PropsOf<C>>, i) => (
+          <Col key={`col${i}`}>
+            {col.map((props: PropsOf<C>, j) =>
+              props._override?.component ? (
+                <props._override.component key={`comp${i}-${j}`} {...props} />
+              ) : (
+                <Component key={`comp${i}-${j}`} {...props} />
+              )
+            )}
+          </Col>
+        ))}
+      </Grid>
     ),
-    [Component, samples, componentName, importPath]
+    [Component, samples]
   );
 
   return (
@@ -97,6 +86,15 @@ function Canvas<C extends EasyComponent>({
       </CanvasHeader>
       <CanvasBody>
         {grid}
+
+        <CanvasFooter>
+          <Code
+            componentName={componentName}
+            importPath={importPath}
+            meta={meta}
+            samples={samples}
+          />
+        </CanvasFooter>
         {newWindow && <RenderInWindow>{grid}</RenderInWindow>}
       </CanvasBody>
     </CanvasContainer>

@@ -5,10 +5,6 @@ import Canvas from "./Canvas";
 import ControlPanel from "./ControlPanel";
 import { getBaseProps } from "./utils/views";
 
-export function nameOf<C extends EasyComponent>(Component: C) {
-  return Component.name ?? Component.displayName ?? "Foo";
-}
-
 type Props<C extends EasyComponent> = {
   docs?: JSX.Element | string;
   componentName: string;

@@ -20,13 +20,13 @@ export type EasyPropMeta<S extends string, T, K = {}> = {
   default?: T;
   required?: boolean;
 };
-// export type InferredPropMeta<P> = P extends EasyPropMeta<infer S, infer T>
-//   ? EasyPropMeta<S, T>
-//   : never;
+
 export type RestrictedPropMeta<T> = Omit<T, "type" | "Controller" | "docs">;
 export type PropMeta<T> =
   | (T extends number ? NumberPropMeta : never)
-  | (T extends string ? StringPropMeta | ColorPropMeta | ChoicesPropMeta<T> : never)
+  | (T extends string
+      ? StringPropMeta | ColorPropMeta | ChoicesPropMeta<T>
+      : never)
   | (T extends boolean ? BooleanPropMeta : never)
   | (T extends (...args: any) => any ? CallbackPropMeta : never);
 
@@ -34,10 +34,15 @@ export type PropMetasFor<T extends Record<string, unknown>> = {
   [Prop in keyof T]?: PropMeta<T[Prop]>;
 };
 export type EasyComponent = { displayName?: string } & ((args: any) => any);
-export type PropsOf<Component extends EasyComponent> = Parameters<Component>[0] & {_overrideComponent?: EasyComponent};
+export type PropsOf<Component extends EasyComponent> =
+  Parameters<Component>[0] & {
+    _override?: { component: EasyComponent; name: string };
+  };
 export type PropMetasOf<Component extends EasyComponent> = PropMetasFor<
   PropsOf<Component>
 >;
 
 export type PropGrid<Props> = Array<Array<Props>>;
-export type PropGridOf<Component extends EasyComponent> = PropGrid<PropsOf<Component>>;
+export type PropGridOf<Component extends EasyComponent> = PropGrid<
+  PropsOf<Component>
+>;

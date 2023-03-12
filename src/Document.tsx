@@ -3,13 +3,17 @@ import styled from "styled-components";
 
 import { EasyComponent, PropMetasOf, PropsOf } from "./types";
 import { LibraryContext } from "./utils/LibraryContext";
-import ComponentView, { nameOf } from "./ComponentView";
+import ComponentView from "./ComponentView";
 import { simple, View } from "./utils/views";
 import { ClickableHeader } from "./utils/Text";
 
 const Name = styled.h1`
   ${({theme}) => theme.doxastic.fonts.header}
 `;
+
+function nameOf<C extends EasyComponent>(Component: C) {
+  return Component.name ?? Component.displayName ?? "Foo";
+}
 
 type BaseDocumentProps<C extends EasyComponent> = {
   _a: C;

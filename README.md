@@ -32,18 +32,17 @@ import Checkbox from "my-checkbox-component";
 
 <Document
   _a={Checkbox}
-  _defaultView='grid'
-  checked={bool({ trinary: true })`
-    This is documentation about the checked prop
-  `}
-  disabled={bool()}
-  onClick={callback()}
+  _views={[views.autoGrid]}
+  _import="src/components/Checkbox.tsx"
+  checked={prop.bool({ trinary: true })}
+  disabled={prop.bool()}
+  onClick={prop.callback()}
 />
 ```
 
 <img width="560" alt="Screenshot 2023-03-12 at 10 36 24 AM" src="https://user-images.githubusercontent.com/4743325/224551675-2389a32b-b8c0-42d6-b1dd-45730d43e396.png">
 
-Easy enough to see, this will render documentation on our Checkbox component. The `_defaultView` here says that we will by default see a grid of permutations of the component, automatically chosen based on the potential and example values of the props of the component.
+Easy enough to see, this will render documentation on our Checkbox component. Each component is rendered in a series of *views* where users will be able to preview the element, interact with it, edit props, and see demo source code. If the `_views` prop is left empty, it will default to showing a view of a single component. In this example, we use the `views.autoGrid` view definition to preview a grid of all combinations of example prop values - being checked = {true, false, undefined} and disabled = {true, false}.
 
 The most important part of documenting a component is documenting the props - and for this, the `Document` component from doxastic takes in property meta values, easily created through a variety of helpers. Here we demonstrate 2 boolean properties, with the `checked` property behaving as a trinary boolean (where unknown is significantly distinct from false), and `disabled` being self-explanatory. All of the docType helpers can additionally act as a tagged template string, where the final string is arbitrary documentation of the prop. The `onClick` prop takes a callback, with the callback helper instantiating a quick method that logs when the callback is triggered.
 
@@ -57,21 +56,24 @@ import {H1, H2, H3, H4, H5, H6} from "my-text-components";
 
 <Document
   _a={H1}
-  _examples={[
-    [
-      { _overrideComponent: H1 },
-      { _overrideComponent: H2 },
-      { _overrideComponent: H3 },
-      { _overrideComponent: H4 },
-      { _overrideComponent: H5 },
-      { _overrideComponent: H6 },
-    ],
+  _import="src/components/Text.tsx"
+  _name="Text"
+  _views={[
+    views.example([
+      [
+        { _override: {component: H1, name: 'H1'} },
+        { _override: {component: H2, name: 'H2'} },
+        { _override: {component: H3, name: 'H3'} },
+        { _override: {component: H4, name: 'H4'} },
+        { _override: {component: H5, name: 'H5'} },
+        { _override: {component: H6, name: 'H6'} },
+      ],
+    ]),
   ]}
-  _defaultView='examples'
-  color={colors({default: '#000', example: '#000'})}
-  children={str({ example: "The quick brown fox etc" })}
+  color={prop.colors({ default: "#000", example: "#000" })}
+  children={prop.str({ example: "The quick brown fox etc" })}
 />
 ```
-Here we group together our various text components, rendering a set of examples with different component. We also introduce the `colors` and `str` docType helpers, which render basic input elements. With this, we can see all of the components together, and quickly try out new colors and contents on all of them:
+Here we group together our various text components, rendering a view of a set of examples with different components. We also introduce the `colors` and `str` docType helpers, which render basic input elements. With this, we can see all of the components together, and quickly try out new colors and contents on all of them:
 
 <img width="680" alt="Screenshot 2023-03-12 at 10 38 56 AM" src="https://user-images.githubusercontent.com/4743325/224551747-f1068e2b-b8cc-4164-95a3-6a2e3b1dd54c.png">
