@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { ComponentContexts, ComponentContextType } from "../ComponentContext";
-import { LibraryContext } from "../LibraryContext";
+import { ComponentContexts, ComponentContextType } from "../utils/ComponentContext";
+import { LibraryContext } from "../utils/LibraryContext";
 import { EasyComponent, PropsOf } from "../types";
 import { DarkBlue, Yellow, Magenta, Gray } from "./CodeColors";
 import CodeComponentColumm from "./CodeComponentColumn";
@@ -13,16 +13,16 @@ const CodeHeader = styled.h3`
   cursor: pointer;
   text-decoration: underline;
   font-weight: lighter;
+  margin: 0;
 `;
 
 const Pre = styled.pre`
   background: #202020;
   color: rgb(168, 216, 248);
   padding: 1em;
-  margin: 2em auto;
-  width: 80%;
   box-sizing: border-box;
-  border-radius: 1em;
+  border-radius: 0 0 0.5em 0.5em;
+  margin: 0 -1rem -1rem;
 `;
 
 type Props = {

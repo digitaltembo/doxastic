@@ -1,6 +1,6 @@
 import React from "react";
 
-import { nameOf } from "../ComponentContext";
+import { nameOf } from "../utils/ComponentContext";
 import { BooleanPropMeta } from "../prop/bool";
 import { EasyComponent, PropMetasFor, PropsOf } from "../types";
 import ComponentLine, { ComponentLineProps } from "./ComponentLine";

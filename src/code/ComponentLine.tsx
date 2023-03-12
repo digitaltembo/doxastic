@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Gray, Green, Blue, Orange } from "./CodeColors";
+import { Gray, Green, Blue, Orange, Magenta } from "./CodeColors";
 
 export type ComponentLineProps = {
   indents: number;
@@ -34,7 +34,15 @@ function ComponentLine({
               {value ? (
                 <>
                   <Blue>{`${key}=`}</Blue>
-                  <Orange>{value}</Orange>
+                  {value.startsWith('"') ? (
+                    <Orange>{value}</Orange>
+                  ) : (
+                    <>
+                      <Magenta>{"{"}</Magenta>
+                      <Blue>{value.substring(1, value.length - 1)}</Blue>
+                      <Magenta>{"}"}</Magenta>
+                    </>
+                  )}
                 </>
               ) : (
                 <Blue>{key}</Blue>
@@ -78,4 +86,4 @@ function ComponentLine({
   return <div />;
 }
 
-export default ComponentLine
+export default ComponentLine;

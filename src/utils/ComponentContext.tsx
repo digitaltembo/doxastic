@@ -4,7 +4,7 @@ import {
   PropGridOf,
   PropMetasOf,
   PropsOf,
-} from "./types";
+} from "../types";
 
 export type ComponentView = "single" | "grid" | "examples";
 

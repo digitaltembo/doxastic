@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { DarkBlue, Green } from "./code/CodeColors";
-import { ComponentContexts, ComponentContextType } from "./ComponentContext";
+import { ComponentContexts, ComponentContextType } from "./utils/ComponentContext";
 import { EasyComponent } from "./types";
 
 const PanelHeader = styled.h3`

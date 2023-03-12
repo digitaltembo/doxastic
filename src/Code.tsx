@@ -1,6 +1,6 @@
 import React from "react";
 import { BooleanPropMeta } from "./prop/bool";
-import { nameOf, ComponentContexts, ComponentContextType } from "./ComponentContext";
+import { nameOf, ComponentContexts, ComponentContextType } from "./utils/ComponentContext";
 import { EasyComponent, PropGrid, PropsOf } from "./types";
 
 type Props = {

@@ -11,9 +11,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Library>
+    <Library defaultShowSource>
       <Document
         _a={Button}
+        _docs={`
+            The humble button serves to entice and engage all sophisticated users
+        `}
+        _import="src/components/Button.tsx"
         mode={prop.choices(
           { default: "primary" },
           "primary",
@@ -39,6 +43,7 @@ root.render(
 
       <Document
         _a={Checkbox}
+        _import="src/components/Checkbox.tsx"
         _defaultView="grid"
         checked={prop.bool({ trinary: true })}
         disabled={prop.bool()}
@@ -47,6 +52,7 @@ root.render(
 
       <Document
         _a={H1}
+        _import="src/components/Text.tsx"
         _name="Text"
         _examples={[
           [

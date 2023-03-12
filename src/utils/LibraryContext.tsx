@@ -1,8 +1,9 @@
 import React from "react";
+import useLocationHashManager from "./useLocationHashManager";
 
 type ComponentRegistration = {
   componentName: string;
-  ref: HTMLHeadingElement;
+  ref: HTMLDivElement;
 };
 type LibraryContextType = {
   activeComponent?: string;
@@ -28,22 +29,34 @@ export function LibraryProvider({
   const [components, setComponents] = React.useState<ComponentRegistration[]>(
     []
   );
+  const {hash, changeHash} = useLocationHashManager();
+
+  const activateComponent = React.useCallback((component?: string) => {
+    changeHash({active: component, view: undefined });
+    setActiveComponent(component);
+  }, [changeHash]);
+
   const registerComponent = React.useCallback(
-    (newRegistration: ComponentRegistration) =>
+    (newRegistration: ComponentRegistration) => {
       setComponents((oldComponents: ComponentRegistration[]) => [
         ...oldComponents.filter(
           ({ componentName }) => componentName !== newRegistration.componentName
         ),
         newRegistration,
-      ]),
+      ]);
+    },
     []
   );
+
+  React.useEffect(() => {
+    setActiveComponent(hash.active);
+  }, [hash.active]);
 
   return (
     <LibraryContext.Provider
       value={{
         activeComponent,
-        setActiveComponent,
+        setActiveComponent: activateComponent,
         components,
         registerComponent,
         defaultShowSource,

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { LibraryContext, LibraryProvider } from "./LibraryContext";
+import { LibraryContext, LibraryProvider } from "./utils/LibraryContext";
+import useLocationHashManager from "./utils/useLocationHashManager";
 
 const Window = styled.div`
   position: absolute;
@@ -36,6 +37,8 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
   const { components, activeComponent } = React.useContext(LibraryContext);
 
   const [search, setSearch] = React.useState<string>("");
+  const [rightRef, setRightRef] = React.useState<HTMLDivElement | null>(null);
+  const { hash, changeHash } = useLocationHashManager();
 
   const filteredComponents = React.useMemo(
     () =>
@@ -58,6 +61,50 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
     },
     []
   );
+  React.useEffect(() => {
+    if (hash.view !== undefined) {
+      const el = components.filter(
+        ({ componentName, ref }) => componentName === hash.view
+      )?.[0]?.ref;
+      el?.scrollIntoView();
+    }
+  }, [components, hash]);
+  React.useEffect(() => {
+    if (rightRef) {
+      let currentlyVisible: Element[] = [];
+      const observer = new IntersectionObserver(
+        (entries, o) => {
+          currentlyVisible = components.flatMap(({ ref }) => {
+            const entryIsIntersecting: boolean | undefined = entries.filter(
+              (entry) => entry.target === ref
+            )?.[0]?.isIntersecting;
+            const notScrolledOut =
+              currentlyVisible.indexOf(ref) >= 0 &&
+              entryIsIntersecting !== false;
+
+            if (entryIsIntersecting || notScrolledOut) {
+              return [ref];
+            }
+            return [];
+          });
+          changeHash({
+            view:
+              currentlyVisible[0]?.querySelector("h1")?.textContent ??
+              undefined,
+          });
+        },
+        { root: rightRef, threshold: 0 }
+      );
+      for (const { ref: componentRef } of components) {
+        observer.observe(componentRef);
+      }
+      return () => {
+        observer.disconnect();
+      };
+    }
+    return () => {};
+  }, [rightRef, components, changeHash]);
+
   if (activeComponent !== undefined) {
     return <>{children}</>;
   }
@@ -81,7 +128,7 @@ export function LibraryLayout({ heading, version, children }: LibraryProps) {
           ))}
         </ul>
       </LeftBar>
-      <RightBar>{children}</RightBar>
+      <RightBar ref={setRightRef}>{children}</RightBar>
     </Window>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import templatize from "../templatize";
+import templatize from "../utils/templatize";
 import { ControllerProps, EasyPropMeta, RestrictedPropMeta } from "../types";
 
 export type ColorPropMeta = EasyPropMeta<

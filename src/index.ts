@@ -1,4 +1,4 @@
-import { ComponentView, ComponentProvider } from "./ComponentContext";
+import { ComponentView, ComponentProvider } from "./utils/ComponentContext";
 import Canvas from "./Canvas";
 import Code from "./code/Code";
 import ControlPanel from "./ControlPanel";
