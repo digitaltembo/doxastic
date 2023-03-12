@@ -1,8 +1,13 @@
 
 <p align="center"><img align="center" alt="Doxastic" src="https://user-images.githubusercontent.com/4743325/224505564-9a428cf2-7dbe-4fbb-84b6-9cb8799a92d0.png" /></p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/doxastic"><img alt="npm" src="https://img.shields.io/npm/v/doxastic" /></a>
+</p>
 <h4 align="center">🚧🚧🚧Under Construction 🚧🚧🚧</h4>
 <h5 align="center">Document your React component library, with React</h5>
 
+           
+  
 **Doxastic** is a component documentation system that aims to ease component implementation and iteration, taking you from install to fully customizable, interactive, and self-documenting component library/playground in a few easy steps.
 
 [Storybook](https://github.com/storybookjs/storybook) is the classic and almost ubiquitous React component library documentation system, and [React Styleguidist](https://github.com/styleguidist/react-styleguidist) is another excellent project in this field. Both have many features that allow your component docs to thrive! But both require new types of files that are built with a whole new build process - Doxastic lets you document and render documentation with an ergonomic and well-typed interface of React components. At a high level, Doxastic should be able to provide all the features you want without additional overhead!
