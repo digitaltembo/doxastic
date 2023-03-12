@@ -1,5 +1,5 @@
 import React from "react";
-import { BooleanPropMeta } from "./docTypes/bool";
+import { BooleanPropMeta } from "./prop/bool";
 import { nameOf, ComponentContexts, ComponentContextType } from "./ComponentContext";
 import { EasyComponent, PropGrid, PropsOf } from "./types";
 

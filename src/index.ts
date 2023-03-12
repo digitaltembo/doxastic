@@ -1,21 +1,10 @@
-import Document from "./Document";
+import { ComponentView, ComponentProvider } from "./ComponentContext";
 import Canvas from "./Canvas";
 import Code from "./Code";
 import ControlPanel from "./ControlPanel";
-import { ComponentView, ComponentProvider } from "./ComponentContext";
-import { num } from "./docTypes/num";
-import { choices } from "./docTypes/choices";
-import { str } from "./docTypes/str";
-import { callback } from "./docTypes/callback";
-import { bool } from "./docTypes/bool";
-import { colors } from "./docTypes/colors";
+import Document from "./Document";
+import Library from "./Library";
+import prop from "./prop/index";
 
 export type { ComponentView };
-export {
-    Document,
-    Canvas,
-    Code,
-    ControlPanel, ComponentProvider,
-    num, choices, str, callback, bool, colors
-};    
-
+export { Document, Canvas, Code, ControlPanel, ComponentProvider, Library, prop };

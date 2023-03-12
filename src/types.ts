@@ -1,9 +1,9 @@
-import { BooleanPropMeta } from "./docTypes/bool";
-import { CallbackPropMeta } from "./docTypes/callback";
-import { ChoicesPropMeta } from "./docTypes/choices";
-import { ColorPropMeta } from "./docTypes/colors";
-import { NumberPropMeta } from "./docTypes/num";
-import { StringPropMeta } from "./docTypes/str";
+import { BooleanPropMeta } from "./prop/bool";
+import { CallbackPropMeta } from "./prop/callback";
+import { ChoicesPropMeta } from "./prop/choices";
+import { ColorPropMeta } from "./prop/colors";
+import { NumberPropMeta } from "./prop/num";
+import { StringPropMeta } from "./prop/str";
 
 export type ControllerProps<T, K = {}> = {
   value: T;

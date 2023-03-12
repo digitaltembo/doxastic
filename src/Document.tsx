@@ -4,23 +4,30 @@ import Code from "./Code";
 import ControlPanel from "./ControlPanel";
 import { ComponentView, nameOf, ComponentProvider } from "./ComponentContext";
 
-import {
-  EasyComponent,
-  PropMetasOf,
-  PropsOf,
-  PropGridOf,
-} from "./types";
+import { EasyComponent, PropMetasOf, PropsOf, PropGridOf } from "./types";
+import { LibraryContext } from "./LibraryContext";
 
-type DocumentProps<C extends EasyComponent> = {
+type BaseDocumentProps<C extends EasyComponent> = {
   _a: C;
   _examples?: PropGridOf<C>;
   _import?: string;
   _groupBy?: Array<keyof PropsOf<C>>;
   _defaultView?: ComponentView;
   _hide?: boolean;
-} & PropMetasOf<C>;
+  _name?: string;
+};
 
-const RESERVED_PROPS = new Set(["_a", "_import", "_examples", "_defaultView"]);
+type DocumentProps<C extends EasyComponent> = BaseDocumentProps<C> &
+  PropMetasOf<C>;
+
+const RESERVED_PROPS = new Set([
+  "_a",
+  "_import",
+  "_examples",
+  "_defaultView",
+  "_hide",
+  "_name",
+]);
 
 function getPropMeta<C extends EasyComponent>(props: DocumentProps<C>) {
   return Object.fromEntries(
@@ -38,15 +45,25 @@ function getPropMeta<C extends EasyComponent>(props: DocumentProps<C>) {
 }
 
 function Document<C extends EasyComponent>(props: DocumentProps<C>) {
-  
   const componentName = React.useMemo(
-    () => nameOf(props._a),
-    [props._a]
+    () => props._name ?? nameOf(props._a),
+    [props._name, props._a]
   );
-  
+  const { activeComponent, registerComponent } =
+    React.useContext(LibraryContext);
+
   const meta = React.useMemo(() => getPropMeta(props), [props]);
 
-  if (props._hide) {
+  const register = React.useCallback(
+    (ref: HTMLHeadingElement) =>
+      ref !== null && registerComponent({ componentName, ref }),
+    [registerComponent, componentName]
+  );
+
+  if (
+    props._hide ||
+    (activeComponent !== undefined && activeComponent !== componentName)
+  ) {
     return null;
   }
 
@@ -58,9 +75,8 @@ function Document<C extends EasyComponent>(props: DocumentProps<C>) {
       Component={props._a}
       defaultView={props._defaultView}
     >
-      <Canvas
-        componentName={componentName}
-      />
+      <h1 ref={register}>{componentName}</h1>
+      <Canvas componentName={componentName} />
       <Code componentName={componentName} importPath={props._import} />
       <ControlPanel componentName={componentName} />
     </ComponentProvider>
